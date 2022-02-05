@@ -48,16 +48,16 @@ def upload_file():
 				file_url = url_for('api.download_file', name=filename)
 
 				# send calls to AssemblyAI for text processing
-				try:
-					apikey = request.form['apikey']
-				except BadRequestKeyError:
-					return jsonify({"error":"missing apikey in form for request."}), 403
-				client = assemblyClient(apikey)
-				asm_upload_url = client.upload_file(filepath)
-				_id = client.queue_url(asm_upload_url, dummy=SEND_DUMMY_QUERY)
+				# try:
+				# 	apikey = request.form['apikey']
+				# except BadRequestKeyError:
+				# 	return jsonify({"error":"missing apikey in form for request."}), 403
+				# client = assemblyClient(apikey)
+				# asm_upload_url = client.upload_file(filepath)
+				# _id = client.queue_url(asm_upload_url, dummy=SEND_DUMMY_QUERY)
 
 				# Sends back the url for the file that was just uploaded
-				return jsonify({"filepath":file_url, "query_id":_id}), 200
+				return jsonify({"filepath":file_url, "query_id":file_url}), 200
 	return
 
 
