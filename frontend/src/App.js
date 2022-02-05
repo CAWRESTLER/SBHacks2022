@@ -1,4 +1,3 @@
-// import React, { useCallback, useMemo,useState } from 'react';
 import React, { useMemo } from 'react';
 import axios from 'axios';
 import ReactPlayer from 'react-player';
@@ -44,13 +43,19 @@ setVideoFilePath(URL.createObjectURL(event.target.files[0]));
     event.preventDefault()
     const formData = new FormData();
     formData.append("file", selectedFile);
+    console.log("sending form data")
+    // the url is run in localhost when in development..
+    const url = (process.env.NODE_ENV !== 'production') ? "http://localhost:5000/" : ""
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:5000/api/upload",
+        url: url + "/api/upload",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
+      // response.data will contain
+      // { filepath: "url" , query_id: "url" }
+      console.log(response)
     } catch(error) {
       console.log(error)
     }
