@@ -1,88 +1,77 @@
-from flask import Blueprint, render_template, request, current_app, url_for, send_from_directory
+from flask import Blueprint, render_template, request, current_app, url_for, send_from_directory, jsonify
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import BadRequestKeyError
 import os
-import assembly
+import json
+from src.assembly import assemblyClient
 import time
 
+# change this variable to True to not send $ requests
+SEND_DUMMY_QUERY = True
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
 
 ALLOWED_EXTENSIONS = {'mp3', 'mp4', 'wav'}
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+	return '.' in filename and \
+		   filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @api.route("/upload", methods=["POST"])
 def upload_file():
-    """
-    route handler for "/api/upload" .
+	"""
+	route handler for "/api/upload" .
 
-    POST - params : { 'file': '/name/of/file' }
-    Example form(for the react frontend):
-    <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-        <input type=file name=file>
-        <input type=submit value=Upload>
-        </form>
-    """
-    if request.method == 'POST':
-            # check if the post request has the file part
-            if 'file' not in request.files:
-                return "no file in request"
-            file = request.files['file']
-            # If the user does not select a file, the browser submits an
-            # empty file without a filename.
-            if file.filename == '':
-                return "no file selected"
-            if file and allowed_file(file.filename):
-                filename = str(time.time())
-                filename += "-" + secure_filename(file.filename)
-                file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-                # Sends back the url for the file that was just uploaded
-                return url_for('api.download_file', name=filename)
-    return
+	POST - params : { 'file': '/name/of/file', 'apikey' : 'key'}
+	Example form(for the react frontend):
+	<h1>Upload new File</h1>
+		<form method=post enctype=multipart/form-data>
+		<input type=file name=file>
+		<input type=submit value=Upload>
+		</form>
+	"""
+	if request.method == 'POST':
+			# check if the post request has the file part
+			if 'file' not in request.files:
+				return "no file in request"
+			file = request.files['file']
+			# If the user does not select a file, the browser submits an
+			# empty file without a filename.
+			if file.filename == '':
+				return "no file selected"
+			if file and allowed_file(file.filename):
+				filename = str(time.time())
+				filename += "-" + secure_filename(file.filename)
+				filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+				file.save(filepath)
+				file_url = url_for('api.download_file', name=filename)
+
+				# send calls to AssemblyAI for text processing
+				try:
+					apikey = request.form['apikey']
+				except BadRequestKeyError:
+					return jsonify({"error":"missing apikey in form for request."}), 403
+				client = assemblyClient(apikey)
+				asm_upload_url = client.upload_file(filepath)
+				_id = client.queue_url(asm_upload_url, dummy=SEND_DUMMY_QUERY)
+
+				# Sends back the url for the file that was just uploaded
+				return jsonify({"filepath":file_url, "query_id":_id}), 200
+	return
 
 
 @api.route("/uploads/<path:name>")
 def download_file(name):
-    """
-    route handler for "/api/uploads/<filename>"
+	"""
+	route handler for "/api/uploads/<filename>"
 
-    Sends over the file directly
-    """
-    return send_from_directory(
-        current_app.config['UPLOAD_FOLDER'], name, as_attachment=False
-    )
+	Sends over the file directly
+	"""
+	return send_from_directory(
+		current_app.config['UPLOAD_FOLDER'], name, as_attachment=False
+	)
 
-# api endpoint for sending file to AssemblyAI servers
-# request data should contain the following fields:
-# {
-#	apikey 	: Assembly AI api key
-#	path 	: Path to the file locally for upload
-# }
-# returns url for the uploaded data
-@api.route("/assembly/upload_filepath", methods=['POST'])
-def upload_filepath():
-	dat = json.loads(request.data)
-	client = assemblyClient(dat['apikey'])
-	response = client.upload_file(dat['path'])
-	return response
-
-# api endpoint for queuing an uploaded data url for processing
-# request data should contain the following fields:
-# {
-#	apikey 	: Assembly AI api key
-#	url 	: url for previously uploaded file
-# }
-# returns the id of the queued data, used for checking results so should be saved
-@api.route("/assembly/queue_url", methods=['POST'])
-def queue_url():
-	dat = json.loads(request.data)
-	client = assemblyClient(dat['apikey'])
-	response = client.upload_file(dat['url'])
-	return response
 
 # api endpoint for getting the response of an query id
 # request data should contain the following fields:
@@ -93,7 +82,7 @@ def queue_url():
 # returns the response from AssemblyAI for the api call in json format
 @api.route("/assembly/check_id", methods=['GET'])
 def check_id():
-	dat = json.loads(request.data)
+	dat = request.form
 	client = assemblyClient(dat['apikey'])
 	response = client.check_id(dat['id'])
 	return response
@@ -107,7 +96,7 @@ def check_id():
 # returns status of the api request
 @api.route("/assembly/get_id_status", methods=['GET'])
 def get_id_status():
-	dat = json.loads(request.data)
+	dat = request.form
 	client = assemblyClient(dat['apikey'])
 	response = client.get_id_status(dat['id'])
 	return response

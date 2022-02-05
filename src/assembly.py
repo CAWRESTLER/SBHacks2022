@@ -23,15 +23,18 @@ class assemblyClient:
 
 	# input a path to a file, reads file as video then outputs upload link for transcription
 	def upload_file(self, path):
-		upload_response = re.post('https://api.assemblyai.com/v2/upload', headers=self.headers, data=read_file(path))
+		upload_response = re.post('https://api.assemblyai.com/v2/upload', headers=self.headers, data=self.read_file(path))
 		audio_url = upload_response.json()["upload_url"]
 		return audio_url
 
 	# input a url, returns request id for polling later
-	def queue_url(self, url):
-		transcript_request = {"audio_url":audio_url, "auto_chapters":'true'}
-		transcript_response = re.post("https://api.assemblyai.com/v2/transcript", json=transcript_request, headers=self.headers)
-		_id = transcript_response.json()["id"]
+	def queue_url(self, url, dummy=False):
+		transcript_request = {"audio_url":url, "auto_chapters":'true'}
+		if dummy == False:
+			transcript_response = re.post("https://api.assemblyai.com/v2/transcript", json=transcript_request, headers=self.headers)
+			_id = transcript_response.json()["id"]
+		else:
+			_id = "o6cbblqme5-7a97-4fc0-9c0d-57c2c96cdb94"
 		return _id
 
 	# input a request id, and return the response from the api
@@ -45,4 +48,4 @@ class assemblyClient:
 
 if __name__ == "__main__":
 	client = assemblyClient(APIKEY)
-	print(client.get_id_status("o6cx1hrmoq-b11f-4f2a-a0e3-2713813ed758"))
+	print(client.get_id_status("o6cb6cvwr9-2b83-4dbb-b939-e8634130d732"))
