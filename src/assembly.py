@@ -28,10 +28,13 @@ class assemblyClient:
 		return audio_url
 
 	# input a url, returns request id for polling later
-	def queue_url(self, url):
+	def queue_url(self, url, dummy=False):
 		transcript_request = {"audio_url":url, "auto_chapters":'true'}
-		transcript_response = re.post("https://api.assemblyai.com/v2/transcript", json=transcript_request, headers=self.headers)
-		_id = transcript_response.json()["id"]
+		if dummy == False:
+			transcript_response = re.post("https://api.assemblyai.com/v2/transcript", json=transcript_request, headers=self.headers)
+			_id = transcript_response.json()["id"]
+		else:
+			_id = "o6cbblqme5-7a97-4fc0-9c0d-57c2c96cdb94"
 		return _id
 
 	# input a request id, and return the response from the api

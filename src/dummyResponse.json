@@ -1,0 +1,186 @@
+{
+  "acoustic_model": "assemblyai_default", 
+  "audio_duration": 14, 
+  "audio_end_at": null, 
+  "audio_start_from": null, 
+  "audio_url": "https://cdn.assemblyai.com/upload/c97c12d4-5bbc-49d4-8e8d-4a22d1632560", 
+  "auto_chapters": "true", 
+  "auto_highlights": false, 
+  "auto_highlights_result": null, 
+  "boost_param": null, 
+  "chapters": [
+    {
+      "end": 6060, 
+      "gist": "Prove that bot is broken", 
+      "headline": "I will prove to you that bot is broken.", 
+      "start": 910, 
+      "summary": "This game. I will prove to you that bot is broken. Because I will carry this game. Watch. Because I will carry this game."
+    }
+  ], 
+  "confidence": 0.936652222222222, 
+  "content_safety": false, 
+  "content_safety_labels": {
+    "results": [], 
+    "status": "unavailable", 
+    "summary": {}
+  }, 
+  "disfluencies": false, 
+  "dual_channel": null, 
+  "entities": null, 
+  "entity_detection": false, 
+  "filter_profanity": false, 
+  "format_text": true, 
+  "iab_categories": false, 
+  "iab_categories_result": {
+    "results": [], 
+    "status": "unavailable", 
+    "summary": {}
+  }, 
+  "id": "o6cbblqme5-7a97-4fc0-9c0d-57c2c96cdb94", 
+  "language_code": "en_us", 
+  "language_model": "assemblyai_default", 
+  "punctuate": true, 
+  "redact_pii": false, 
+  "redact_pii_audio": false, 
+  "redact_pii_audio_quality": null, 
+  "redact_pii_policies": null, 
+  "redact_pii_sub": null, 
+  "sentiment_analysis": false, 
+  "sentiment_analysis_results": null, 
+  "speaker_labels": false, 
+  "speed_boost": false, 
+  "status": "completed", 
+  "text": "This game. I will prove to you that bot is broken. Because I will carry this game. Watch.", 
+  "utterances": null, 
+  "webhook_status_code": null, 
+  "webhook_url": null, 
+  "word_boost": [], 
+  "words": [
+    {
+      "confidence": 0.99275, 
+      "end": 1074, 
+      "speaker": null, 
+      "start": 910, 
+      "text": "This"
+    }, 
+    {
+      "confidence": 0.99984, 
+      "end": 1386, 
+      "speaker": null, 
+      "start": 1112, 
+      "text": "game."
+    }, 
+    {
+      "confidence": 0.99539, 
+      "end": 1602, 
+      "speaker": null, 
+      "start": 1448, 
+      "text": "I"
+    }, 
+    {
+      "confidence": 0.99318, 
+      "end": 1758, 
+      "speaker": null, 
+      "start": 1616, 
+      "text": "will"
+    }, 
+    {
+      "confidence": 0.82583, 
+      "end": 2062, 
+      "speaker": null, 
+      "start": 1784, 
+      "text": "prove"
+    }, 
+    {
+      "confidence": 0.99718, 
+      "end": 2202, 
+      "speaker": null, 
+      "start": 2086, 
+      "text": "to"
+    }, 
+    {
+      "confidence": 0.99951, 
+      "end": 2430, 
+      "speaker": null, 
+      "start": 2216, 
+      "text": "you"
+    }, 
+    {
+      "confidence": 0.98351, 
+      "end": 2694, 
+      "speaker": null, 
+      "start": 2480, 
+      "text": "that"
+    }, 
+    {
+      "confidence": 0.78151, 
+      "end": 2998, 
+      "speaker": null, 
+      "start": 2732, 
+      "text": "bot"
+    }, 
+    {
+      "confidence": 0.57158, 
+      "end": 3234, 
+      "speaker": null, 
+      "start": 3034, 
+      "text": "is"
+    }, 
+    {
+      "confidence": 0.78398, 
+      "end": 3814, 
+      "speaker": null, 
+      "start": 3272, 
+      "text": "broken."
+    }, 
+    {
+      "confidence": 0.99845, 
+      "end": 4266, 
+      "speaker": null, 
+      "start": 3922, 
+      "text": "Because"
+    }, 
+    {
+      "confidence": 0.99915, 
+      "end": 4518, 
+      "speaker": null, 
+      "start": 4328, 
+      "text": "I"
+    }, 
+    {
+      "confidence": 0.98708, 
+      "end": 4698, 
+      "speaker": null, 
+      "start": 4544, 
+      "text": "will"
+    }, 
+    {
+      "confidence": 0.96161, 
+      "end": 4978, 
+      "speaker": null, 
+      "start": 4724, 
+      "text": "carry"
+    }, 
+    {
+      "confidence": 0.99648, 
+      "end": 5214, 
+      "speaker": null, 
+      "start": 5014, 
+      "text": "this"
+    }, 
+    {
+      "confidence": 0.99977, 
+      "end": 5742, 
+      "speaker": null, 
+      "start": 5252, 
+      "text": "game."
+    }, 
+    {
+      "confidence": 0.99294, 
+      "end": 6060, 
+      "speaker": null, 
+      "start": 5876, 
+      "text": "Watch."
+    }
+  ]
+}
