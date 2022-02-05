@@ -1,10 +1,16 @@
 from flask import Flask, request, render_template, url_for, Response, Blueprint
 
+# TODO figure out a better path?
+UPLOAD_FOLDER = './uploads'
+
 
 def create_app():
     app = Flask(
         __name__, static_folder="./build/static", template_folder="./build"
     )
+
+    # TODO refactor into separate config file
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     with app.app_context():
         from .api import api
 
