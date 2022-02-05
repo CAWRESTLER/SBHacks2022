@@ -7,6 +7,8 @@ authors = ["ThisKappaIsGrey <thanatechaumnuaiwit@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 Flask = "^2.0.2"
+requests = "^2.27.1"
+python-dotenv = "^0.19.2"
 
 [tool.poetry.dev-dependencies]
 
