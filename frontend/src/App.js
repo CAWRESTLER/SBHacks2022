@@ -1,6 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo,useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-
 const baseStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -28,9 +27,23 @@ const rejectStyle = {
 };
 
 function App(props) {
+  const [url, setUrl] =useState();
+
   const onDrop = useCallback(acceptedFiles => {
-    console.log(acceptedFiles);
+    setUrl(acceptedFiles[0].path);
+
   }, []);
+  const handleChange = () =>{
+    var requestOptions = {
+      method: 'POST',
+      redirect: 'follow'
+    };
+    
+    fetch(`localhost:5000/api/upload?file=${url}`, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+  }
 
   const {
     getRootProps,
