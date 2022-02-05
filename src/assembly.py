@@ -13,7 +13,7 @@ class assemblyClient:
 		self.headers = {"authorization": self.apikey, "content-type":"application/json"}
 
 	# input a path to a file, and it will act as a generator for the file contents
-	def readFile(self, path):
+	def read_file(self, path):
 		with open(path, 'rb') as f:
 			while True:
 				data = f.read(5242880)
@@ -22,23 +22,27 @@ class assemblyClient:
 				yield data
 
 	# input a path to a file, reads file as video then outputs upload link for transcription
-	def uploadFile(self, path):
-		upload_response = re.post('https://api.assemblyai.com/v2/upload', headers=self.headers, data=readFile(path))
+	def upload_file(self, path):
+		upload_response = re.post('https://api.assemblyai.com/v2/upload', headers=self.headers, data=read_file(path))
 		audio_url = upload_response.json()["upload_url"]
 		return audio_url
 
 	# input a url, returns request id for polling later
-	def queueUrl(self, url):
+	def queue_url(self, url):
 		transcript_request = {"audio_url":audio_url, "auto_chapters":'true'}
 		transcript_response = re.post("https://api.assemblyai.com/v2/transcript", json=transcript_request, headers=self.headers)
 		_id = transcript_response.json()["id"]
 		return _id
 
 	# input a request id, and return the response from the api
-	def checkId(self, id):
+	def check_id(self, id):
 		polling_response = re.get("https://api.assemblyai.com/v2/transcript/" + id, headers=self.headers)
 		return polling_response.json()
 
+	# given a request id, return the status
+	def get_id_status(self, id):
+		return self.check_id(id)['status']
+
 if __name__ == "__main__":
 	client = assemblyClient(APIKEY)
-	print(client.checkId("o6cx1hrmoq-b11f-4f2a-a0e3-2713813ed758"))
+	print(client.get_id_status("o6cx1hrmoq-b11f-4f2a-a0e3-2713813ed758"))
