@@ -14,7 +14,7 @@ College students with prerecorded lectures; mainly used for summarization and cl
 - Interact with the video timestamps in the website
 
 ## Tasks
-Rhea: Website design and aesthetic, building website content
-Jacob: Building website content, handling api requests to backend
-Anshuman: Backend api for processing and returning information in proper format
-Thanawat: Integrating flask + react for website, database integration
+- Rhea: Website design and aesthetic, building website content
+- Jacob: Building website content, handling api requests to backend
+- Anshuman: Backend api for processing and returning information in proper format
+- Thanawat: Integrating flask + react for website, database integration
