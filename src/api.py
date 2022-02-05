@@ -6,7 +6,8 @@ import json
 from src.assembly import assemblyClient
 import time
 
-SEND_DUMMY_QUERRY = True
+# change this variable to True to not send $ requests
+SEND_DUMMY_QUERY = True
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -53,7 +54,7 @@ def upload_file():
 					return jsonify({"error":"missing apikey in form for request."}), 403
 				client = assemblyClient(apikey)
 				asm_upload_url = client.upload_file(filepath)
-				_id = client.queue_url(asm_upload_url, dummy=SEND_DUMMY_QUERRY)
+				_id = client.queue_url(asm_upload_url, dummy=SEND_DUMMY_QUERY)
 
 				# Sends back the url for the file that was just uploaded
 				return jsonify({"filepath":file_url, "query_id":_id}), 200
