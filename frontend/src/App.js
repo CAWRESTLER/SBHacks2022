@@ -35,11 +35,11 @@ const App = () => {
   const [videoFilePath, setVideoFilePath] = React.useState(null);
 
 
-const handleVideoUpload = (event) => {
-setVideoFilePath(URL.createObjectURL(event.target.files[0]));
-};
+  const handleVideoUpload = (event) => {
+    setVideoFilePath(URL.createObjectURL(event.target.files[0]));
+  };
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const formData = new FormData();
     formData.append("file", selectedFile);
@@ -56,7 +56,7 @@ setVideoFilePath(URL.createObjectURL(event.target.files[0]));
       // response.data will contain
       // { filepath: "url" , query_id: "url" }
       console.log(response)
-    } catch(error) {
+    } catch (error) {
       console.log(error)
     }
   }
@@ -71,7 +71,8 @@ setVideoFilePath(URL.createObjectURL(event.target.files[0]));
     getInputProps,
     isDragActive,
     isDragAccept,
-    isDragReject
+    isDragReject,
+    acceptedFiles
   } = useDropzone({
     onDrop: (acceptedFiles) => {
       setSelectedFile(acceptedFiles[0])
@@ -91,17 +92,25 @@ setVideoFilePath(URL.createObjectURL(event.target.files[0]));
     isDragAccept
   ]);
 
-
+  const files = acceptedFiles.map(file => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+    </li>
+  ));
 
   return (
     <form onSubmit={handleSubmit}>
       {/* <input type="file" onChange={handleFileSelect}/> */}
-      <div {...getRootProps({style})}>
+      <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <div>Drag and drop your videos here.</div>
       </div>
+      <aside>
+        <h4>Files to upload</h4>
+        <ul>{files}</ul>
+      </aside>
       <input type="submit" value="Upload File" />
-      <ReactPlayer url = { videoFilePath }  width="100%" height="100%" controls={true} />
+      {/* <ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} /> */}
     </form>
   )
 };
