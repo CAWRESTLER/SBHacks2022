@@ -61,15 +61,19 @@ def upload_file():
 	return
 
 
-@api.route("/uploads/<path:name>")
+@api.route("/videos/<path:name>", methods=["GET"])
 def download_file(name):
 	"""
 	route handler for "/api/uploads/<filename>"
 
 	Sends over the file directly
 	"""
+	# return name
+	# serving video from server should work now..
+	root_dir = os.getcwd()
+	print(os.path.join(root_dir, 'uploads'))
 	return send_from_directory(
-		current_app.config['UPLOAD_FOLDER'], name, as_attachment=False
+		os.path.join(root_dir, 'uploads'), name, as_attachment=True
 	)
 
 
