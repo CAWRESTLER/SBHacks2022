@@ -38,7 +38,7 @@ const App = () => {
   const [data, setData] = React.useState(null);
   const [videoUrl, setVideoUrl] = React.useState(null);
   // Video StatesFilePath
-  // waitingFile - uploading - showvideo
+  // waitingFile - uploading - processing - showvideo
   const [appState, setAppState] = React.useState("waitingFile");
 
 
@@ -76,6 +76,8 @@ const App = () => {
       // { filepath: "url" , query_id: "url" }
       setVideoUrl(response.data.filepath)
       // Make a get requst to check the id
+
+      setAppState("processing")
       const data = await axios.get(url + '/api/assembly/check_id', {
         params: {
           apikey: apikey,
@@ -184,6 +186,19 @@ const App = () => {
         <span>O</span>
         <span>A</span>
         <span>D</span>
+        <span>I</span>
+        <span>N</span>
+        <span>G</span>
+      </div>)
+    case "processing":
+      return (<div className='upload'> <span>P</span>
+        <span>R</span>
+        <span>O</span>
+        <span>C</span>
+        <span>C</span>
+        <span>E</span>
+        <span>S</span>
+        <span>S</span>
         <span>I</span>
         <span>N</span>
         <span>G</span>
