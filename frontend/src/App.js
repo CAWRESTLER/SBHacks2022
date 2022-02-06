@@ -125,14 +125,14 @@ const App = () => {
         
        </div>
        <div >
-         <h4>FILES TO UPLOAD</h4>
+         <h4>UPLOADED FILE</h4>
           <ul class="gradient-list">
            <li>  {files} </li>  
             </ul>
        </div>
        
-       <h4>ENTER THE API KEY</h4>
-       <input type="text" placeholder='ENTER THE API KEY' className='api' />
+       <h4>API KEY</h4>
+       <input type="text" placeholder='AssemblyAI API key' className='api' />
        <br></br>
        <br></br>
        <input type="submit" value="Submit" className='up' />
