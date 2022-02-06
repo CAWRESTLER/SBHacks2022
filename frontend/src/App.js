@@ -71,7 +71,7 @@ const App = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       // Wait 3 seconds to mock the uploading process
-      await new Promise(r => setTimeout(r, 3000));
+    //   await new Promise(r => setTimeout(r, 3000));
 
       // response.data will contain
       // { filepath: "url" , query_id: "url" }
