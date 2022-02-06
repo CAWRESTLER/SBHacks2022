@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import axios from 'axios';
 import Player from "./Player"
 import { useDropzone } from 'react-dropzone';
+import logo from './logo.png';
 import './App.css'
 // import axios from 'axios';
 const baseStyle = {
@@ -153,6 +154,12 @@ const App = () => {
     case "waitingFile":
       // If I abstract into a component clicking doesn't work for some reason
       return (<div>
+        <div class="bg1"></div>
+   <div class="bg2"></div>
+   <div class="bg3"></div>
+   <img src={logo} className="App-logo" alt="logo" />
+   <br></br>
+   
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
         <form onSubmit={handleSubmit}>
 
@@ -165,6 +172,7 @@ const App = () => {
 
           </div>
           <div >
+            <br></br>
             <h4>UPLOADED FILE</h4>
             <ul class="gradient-list">
               <li>  {files} </li>
