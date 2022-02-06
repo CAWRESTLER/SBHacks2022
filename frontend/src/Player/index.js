@@ -5,6 +5,7 @@ import Pagination from 'react-bootstrap/Pagination'
 import { Accordion, Container, Col, Row, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./player.css"
+import logo from '../logo.png';
 const data = require("./dummy2.json");
 
 
@@ -31,8 +32,8 @@ export function makeSentences(words, len, accum) {
 }
 
 function Player({ videoPath,
-    data
-  }
+  data
+}
 ) {
   const player = useRef();
   const [isTimeStamp, setIsTimestamp] = useState(true)
@@ -49,81 +50,86 @@ function Player({ videoPath,
   }
 
   return (
-    <Container fluid>
-      <Row >
-        <Col xs={5}>
-          {isTimeStamp && (
-            <>
-              <h2>Timestamps</h2>
-              <div className="overflow">
-                {data.chapters.map((chapter) => {
-                  return (
-                    <div>
-                      <div>
-                        {" "}
-                        <h2 className="chapter"> {chapter.gist}{" "}</h2>
-                      </div>
-                      <div>
-                        {" "}
-                        <b>Timestamp: </b>{" "}
-                        <button className="button-name" onClick={handleClick}>
-                          {millisToMinutesAndSeconds(chapter.start)}{" "}
-                        </button>{" "}
-                        {/* --{" "} */}
-                        {/* <button onClick={handleClick}> */}
-                        {/*   {millisToMinutesAndSeconds(chapter.end)} */}
-                        {/* </button>{" "} */}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
-          {
-            !isTimeStamp && (<>
-              <h2>Captions</h2>
-              <div className="overflow">
-                {makeSentences(data.words, 20, []).map((chapter) => {
-                  return (
-                    <div>
-                      <div>
-                        {" "} {chapter.text}{" "}
-                      </div>
-                      <div>
-                        {" "}
-                        <b>Timestamp: </b>{" "}
-                        <button className="button-name" onClick={handleClick}>
-                          {millisToMinutesAndSeconds(chapter.start)}{" "}
-                        </button>{" "}
-                        {/* --{" "} */}
-                        {/* <button onClick={handleClick}> */}
-                        {/*   {millisToMinutesAndSeconds(chapter.end)} */}
-                        {/* </button>{" "} */}
-                      </div>
-                    </div>
-                  );
+    <div>
+      <img src={logo} className="logo" alt="logo" />
+      <Container fluid style={{ paddingLeft: 0, paddingRight: 0 }}>
+        <Row style={{ marginLeft: 0, marginRight: 0 }}>
+          <Col xs={5} style={{ paddingLeft: 0, paddingRight: 0 }}>
+            <div className="cont">
+              {isTimeStamp && (
+                <>
+                  <h2>Timestamps</h2>
+                  <div className="overflow">
+                    {data.chapters.map((chapter) => {
+                      return (
+                        <div>
+                          <div>
+                            {" "}
+                            <b>Gist: </b> {chapter.gist}{" "}
+                          </div>
+                          <div>
+                            {" "}
+                            <b>Timestamp: </b>{" "}
+                            <button onClick={handleClick} className="button-name">
+                              {millisToMinutesAndSeconds(chapter.start)}{" "}
+                            </button>{" "}
+                            {/* --{" "} */}
+                            {/* <button onClick={handleClick}> */}
+                            {/*   {millisToMinutesAndSeconds(chapter.end)} */}
+                            {/* </button>{" "} */}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+              {
+                !isTimeStamp && (<>
+                  <h2>Captions</h2>
+                  <div className="overflow" className="button-name">
+                    {makeSentences(data.words, 20, []).map((chapter) => {
+                      return (
+                        <div>
+                          <div>
+                            {" "} {chapter.text}{" "}
+                          </div>
+                          <div>
+                            {" "}
+                            <b>Timestamp: </b>{" "}
+                            <button onClick={handleClick}>
+                              {millisToMinutesAndSeconds(chapter.start)}{" "}
+                            </button>{" "}
+                            {/* --{" "} */}
+                            {/* <button onClick={handleClick}> */}
+                            {/*   {millisToMinutesAndSeconds(chapter.end)} */}
+                            {/* </button>{" "} */}
+                          </div>
+                        </div>
+                      );
 
-                })}
-              </div>
-            </>)
+                    })}
+                  </div>
+                </>)
 
-          }
-    <button variant="primary" onClick={() => setIsTimestamp(!isTimeStamp)} className="button-name" >Show {isTimeStamp ? "Captions" : "Timestamps"}</button>{' '}
-        </Col>
-        <Col xs={7}>
-          <div className="center">
-            <ReactPlayer
-              ref={player}
-              url={videoPath}
-              width="1000px"
-              height="560px"
-              controls={true}
-            />
-          </div>
-        </Col>
-      </Row>
-    </Container>
+              }
+            </div>
+            <button variant="primary" onClick={() => setIsTimestamp(!isTimeStamp)} className="button-name" >Show {isTimeStamp ? "Captions" : "Timestamps"}</button>{' '}
+          </Col>
+          <Col xs={7}>
+            <div className="center">
+              <ReactPlayer
+                ref={player}
+                url={videoPath}
+                width="1000px"
+                height="560px"
+                controls={true}
+              />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 export default Player;

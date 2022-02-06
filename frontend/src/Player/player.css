@@ -7,6 +7,16 @@
     margin-bottom: 50px;
     /* scrollbar-width: 20px !important; */
 }
+.cont {
+    background: #5E81AC;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    border-radius: 20px;
+}
 .my-h1 {
   font-size: 32px;
   font-weight: 300;
@@ -59,8 +69,9 @@
 .center {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     height: 100%;
+    margin-left: 100px;
   }
 .center-2{
     display: flex;
@@ -70,4 +81,7 @@
 .chapter {
 	font-size: x-large;
 	font-weight: normal;
+}
+.logo {
+    width: 500px;
 }
