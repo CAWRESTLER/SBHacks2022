@@ -286,7 +286,13 @@ h4 {
   animation-delay: 0.9s;
 }
 
+.upload span:nth-child(10) {
+  animation-delay: 1s;
+}
 
+.upload span:nth-child(11) {
+  animation-delay: 1.1s;
+}
 @keyframes animate {
   0% {
     color: rgb(255, 255, 255);
