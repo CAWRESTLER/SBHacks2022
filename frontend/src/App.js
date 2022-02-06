@@ -39,7 +39,7 @@ const App = () => {
   const [data, setData] = React.useState(null);
   const [videoUrl, setVideoUrl] = React.useState(null);
   // Video StatesFilePath
-  // waitingFile - uploading - processing - showVideo
+  // waitingFile - uploading - processing - showvideo
   const [appState, setAppState] = React.useState("waitingFile");
 
 
@@ -188,8 +188,9 @@ const App = () => {
         </form>
       </div>)
     case "uploading":
-		
-      return (<div className='upload'> <span>U</span>
+      return (<div className='upload'>
+         <img src={logo} className="App-logo" alt="logo" /> 
+      <span>U</span>
         <span>P</span>
         <span>L</span>
         <span>O</span>
@@ -200,7 +201,9 @@ const App = () => {
         <span>G</span>
       </div>)
     case "processing":
-      return (<div className='upload'> <span>P</span>
+      return (<div className='upload'>
+        <img src={logo} className="App-logo" alt="logo" />  
+      <span>P</span>
         <span>R</span>
         <span>O</span>
         <span>C</span>

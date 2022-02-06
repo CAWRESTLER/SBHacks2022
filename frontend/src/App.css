@@ -273,6 +273,10 @@ h4 {
   }
 }
 
+.upload img {
+  width: 200px;
+}
+
 .upload {
   height: 40px;
   position: absolute;
@@ -282,6 +286,7 @@ h4 {
 }
 
 .upload span {
+
   font-family: -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
     "Open Sans", "Helvetica Neue", sans-serif;
