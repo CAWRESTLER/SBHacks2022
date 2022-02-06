@@ -38,7 +38,7 @@ const App = () => {
   const [videoUrl, setVideoUrl] = React.useState(null);
   // Video StatesFilePath
   // waitingFile - uploading - showvideo
-  const [appState, setAppState] = React.useState("waitingFile");
+  const [appState, setAppState] = React.useState("showVideo");
 
 
   // const handleVideoUpload = (event) => {

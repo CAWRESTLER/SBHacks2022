@@ -4,7 +4,34 @@ import { Accordion, Card, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 const data = require("./dummy2.json");
 
-function Player({ videoPath }) {
+
+// words {"text": "This", "start": 910, "end": 1074, "confidence": 0.99275, "speaker": null}
+// appends two "words"
+export function concatWords(word1, word2) {
+  return ({
+    "text": word1.text + " " + word2.text,
+    "start": word1.start,
+    "end": word2.end
+  })
+}
+
+export function makeSentences(words, len, accum) {
+  if(words.length === 0 ||  !Array.isArray(words)) return accum
+
+  const l = words.slice(0,len)
+  const r = words.slice(len, words.length)
+  // console.log(r)
+  console.log(l)
+  const g = l.reduce((prev, next) => concatWords(prev,next))
+// not sure if js optimizes tail recursion.. haha
+  return makeSentences(r, len, accum.concat(g))
+
+
+}
+
+function Player ({ videoPath,
+                   // data
+                 })  {
   const player = useRef();
   const handleClick = (event) => {
     console.log(event.target.innerText);
@@ -43,6 +70,30 @@ function Player({ videoPath }) {
               <div>
                 {" "}
                 <b>Gist: </b> {chapter.gist}{" "}
+              </div>
+              <div>
+                {" "}
+                <b>Timestamp: </b>{" "}
+                <button onClick={handleClick}>
+                  {millisToMinutesAndSeconds(chapter.start)}{" "}
+                </button>{" "}
+                --{" "}
+                <button onClick={handleClick}>
+                  {millisToMinutesAndSeconds(chapter.end)}
+                </button>{" "}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <h1>Captions</h1>
+      <div>
+        {makeSentences(data.words,20,[]).map((chapter) => {
+          return (
+            <div>
+              <div>
+                {" "}
+                <b>Gist: </b> {chapter.text}{" "}
               </div>
               <div>
                 {" "}
