@@ -9,7 +9,7 @@ import time
 # change this variable to the name of a preset
 # dummy data to not send $ requests, None to work normally
 # preset data is src/dummyResponses/{name}
-DUMMY_QUERY = None
+DUMMY_QUERY = "fft"
 
 api = Blueprint("api", __name__, url_prefix="/api")
 

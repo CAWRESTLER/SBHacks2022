@@ -152,7 +152,7 @@ const App = () => {
   switch (appState) {
     case "waitingFile":
       // If I abstract into a component clicking doesn't work for some reason
-      return (<body>
+      return (<div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
         <form onSubmit={handleSubmit}>
 
@@ -172,13 +172,13 @@ const App = () => {
           </div>
 
           <h4>API KEY</h4>
-          <input type="text" placeholder='ENTER THE API KEY' className='api' onChange={(e) => setApikey(e.target.value)} value={apikey} />
+          <input type="text" placeholder='AssemblyAI API key' className='api' onChange={(e) => setApikey(e.target.value)} value={apikey} />
           <br></br>
           <br></br>
           <input type="submit" value="Submit" className='up' />
           {/* <ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} /> */}
         </form>
-      </body>)
+      </div>)
     case "uploading":
       return (<div className='upload'> <span>U</span>
         <span>P</span>
