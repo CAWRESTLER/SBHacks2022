@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react"
 import ReactPlayer from 'react-player';
-const data = require("./dummy2.json")
+// const data = require("./dummy2.json")
 
 
 
-function Player ({ videoPath })  {
+function Player ({ videoPath, data })  {
   const player = useRef();
   const handleClick = (event) => {
     console.log(event.target.innerText)
@@ -20,7 +20,7 @@ function Player ({ videoPath })  {
   
   return (
     <div>
-        <ReactPlayer  ref={player}url={"https://www.youtube.com/watch?v=h7apO7q16V0"} width="100%" height="100%" controls={true} />
+        <ReactPlayer  ref={player}url={videoPath} width="100%" height="100%" controls={true} />
     <h1>Video transcript:  </h1>
       <p>
         {data.text}
