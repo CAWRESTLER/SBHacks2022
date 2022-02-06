@@ -9,7 +9,7 @@ import time
 # change this variable to the name of a preset
 # dummy data to not send $ requests, None to work normally
 # preset data is src/dummyResponses/{name}
-DUMMY_QUERY = None
+DUMMY_QUERY = "cs165a"
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -88,7 +88,7 @@ def download_file(name):
 # returns the response from AssemblyAI for the api call in json format
 @api.route("/assembly/check_id", methods=['GET'])
 def check_id():
-	dat = request.form
+	dat = request.args
 	client = assemblyClient(dat['apikey'])
 	response = client.check_id(dat['id'], dummy=DUMMY_QUERY)
 	return jsonify(response)
@@ -102,7 +102,7 @@ def check_id():
 # returns status of the api request
 @api.route("/assembly/get_id_status", methods=['GET'])
 def get_id_status():
-	dat = request.form
+	dat = request.args
 	client = assemblyClient(dat['apikey'])
 	response = client.get_id_status(dat['id'], dummy=DUMMY_QUERY)
 	return response

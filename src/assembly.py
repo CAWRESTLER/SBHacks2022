@@ -62,7 +62,7 @@ class assemblyClient:
 			else:
 				stage = "completed"
 			with open(f"{base}/dummy{stage}.json", 'r') as f:
-				return f.read()
+				return json.loads(f.read())
 
 	# given a request id, return the status
 	def get_id_status(self, id, dummy=None):
