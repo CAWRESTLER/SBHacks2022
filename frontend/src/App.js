@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import axios from 'axios';
-import ReactPlayer from 'react-player';
+import Player from "./Player"
 import { useDropzone } from 'react-dropzone';
 // import axios from 'axios';
 const baseStyle = {
@@ -36,7 +36,7 @@ const App = () => {
   const [videoUrl, setVideoUrl] = React.useState(null);
   // Video StatesFilePath
   // waitingFile - uploading - showvideo
-  const [appState, setAppState] = React.useState("waitingFile");
+  const [appState, setAppState] = React.useState("showVideo");
 
 
   // const handleVideoUpload = (event) => {
@@ -130,7 +130,8 @@ const App = () => {
       // Right now the video is played from the server..
       // but we can also play the local version too. Probs better
       // (<ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} />)
-      return (<ReactPlayer url={url + videoUrl} width="100%" height="100%" controls={true} />)
+      return <Player videoPath={videoFilePath}/>
+      // return (<ReactPlayer url={url + videoUrl} width="100%" height="100%" controls={true} />)
 
     default:
       return (<div>Something went wrong</div>)
