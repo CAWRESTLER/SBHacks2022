@@ -109,7 +109,7 @@ function Player({ videoPath,
             </>)
 
           }
-    <Button variant="primary" onClick={() => setIsTimestamp(!isTimeStamp)} className="button" >Show {isTimeStamp ? "Captions" : "Timestamps"}</Button>{' '}
+    <button variant="primary" onClick={() => setIsTimestamp(!isTimeStamp)} className="button-name" >Show {isTimeStamp ? "Captions" : "Timestamps"}</button>{' '}
         </Col>
         <Col xs={7}>
           <div className="center">
