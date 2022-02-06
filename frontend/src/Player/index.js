@@ -65,7 +65,7 @@ function Player({ videoPath,
                         <div>
                           <div>
                             {" "}
-                            <b>Gist: </b> {chapter.gist}{" "}
+                            <h2 className="chapter">{chapter.gist}{" "}</h2>
                           </div>
                           <div>
                             {" "}
