@@ -66,7 +66,7 @@ class assemblyClient:
 
 	# given a request id, return the status
 	def get_id_status(self, id, dummy=None):
-		return self.check_id(id, dummy=None)['status']
+		return self.check_id(id, dummy=dummy)['status']
 
 if __name__ == "__main__":
 	from time import sleep
