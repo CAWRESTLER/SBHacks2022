@@ -1,7 +1,6 @@
-// import React, { useCallback, useMemo,useState } from 'react';
 import React, { useMemo } from 'react';
 import axios from 'axios';
-import ReactPlayer from 'react-player';
+import Player from "./Player"
 import { useDropzone } from 'react-dropzone';
 // import axios from 'axios';
 const baseStyle = {
@@ -34,39 +33,56 @@ const App = () => {
   // a local state to store the currently selected file.
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [videoFilePath, setVideoFilePath] = React.useState(null);
+  const [videoUrl, setVideoUrl] = React.useState(null);
+  // Video StatesFilePath
+  // waitingFile - uploading - showvideo
+  const [appState, setAppState] = React.useState("showVideo");
 
 
-const handleVideoUpload = (event) => {
-setVideoFilePath(URL.createObjectURL(event.target.files[0]));
-};
+  // const handleVideoUpload = (event) => {
+  //   setVideoFilePath(URL.createObjectURL(event.target.files[0]));
+  // };
 
-  const handleSubmit = async(event) => {
+  const url = (process.env.NODE_ENV !== 'production') ? "http://localhost:5000/" : ""
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const formData = new FormData();
     formData.append("file", selectedFile);
+    setAppState("uploading")
+    console.log("sending form data")
+    // the url is run in localhost when in development..
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:5000/api/upload",
+        url: url + "/api/upload",
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-    } catch(error) {
+      // Wait 3 seconds to mock the uploading process
+      await new Promise(r => setTimeout(r, 3000));
+
+      // response.data will contain
+      // { filepath: "url" , query_id: "url" }
+      console.log(response)
+      setVideoUrl(response.data.filepath)
+      setAppState("showVideo")
+    } catch (error) {
       console.log(error)
     }
   }
 
-  const handleFileSelect = (event) => {
-    console.log("handle file")
-    setSelectedFile(event.target.files[0])
-    setVideoFilePath(URL.createObjectURL(event.target.files[0]));
-  }
+  // const handleFileSelect = (event) => {
+  //   console.log("handle file")
+  //   setSelectedFile(event.target.files[0])
+  //   // setVideoFilePath(URL.createObjectURL(event.target.files[0]));
+  // }
   const {
     getRootProps,
     getInputProps,
     isDragActive,
     isDragAccept,
-    isDragReject
+    isDragReject,
+    acceptedFiles
   } = useDropzone({
     onDrop: (acceptedFiles) => {
       setSelectedFile(acceptedFiles[0])
@@ -86,19 +102,40 @@ setVideoFilePath(URL.createObjectURL(event.target.files[0]));
     isDragAccept
   ]);
 
+  const files = acceptedFiles.map(file => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+    </li>
+  ));
 
-
-  return (
-    <form onSubmit={handleSubmit}>
+  switch (appState) {
+    case "waitingFile":
+      // If I abstract into a component clicking doesn't work for some reason
+      return (<form onSubmit={handleSubmit}>
       {/* <input type="file" onChange={handleFileSelect}/> */}
-      <div {...getRootProps({style})}>
+      <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <div>Drag and drop your videos here.</div>
       </div>
+      <aside>
+        <h4>Files to upload</h4>
+        <ul>{files}</ul>
+      </aside>
       <input type="submit" value="Upload File" />
-      <ReactPlayer url = { videoFilePath }  width="100%" height="100%" controls={true} />
-    </form>
-  )
+      {/* <ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} /> */}
+    </form>)
+    case "uploading":
+      return (<div> uploadng </div>)
+    case "showVideo":
+      // Right now the video is played from the server..
+      // but we can also play the local version too. Probs better
+      // (<ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} />)
+      return <Player videoPath={videoFilePath}/>
+      // return (<ReactPlayer url={url + videoUrl} width="100%" height="100%" controls={true} />)
+
+    default:
+      return (<div>Something went wrong</div>)
+  }
 };
 
 

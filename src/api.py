@@ -6,8 +6,10 @@ import json
 from src.assembly import assemblyClient
 import time
 
-# change this variable to True to not send $ requests
-SEND_DUMMY_QUERY = True
+# change this variable to the name of a preset
+# dummy data to not send $ requests, None to work normally
+# preset data is src/dummyResponses/{name}
+DUMMY_QUERY = None
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
@@ -48,28 +50,32 @@ def upload_file():
 				file_url = url_for('api.download_file', name=filename)
 
 				# send calls to AssemblyAI for text processing
-				# try:
-				# 	apikey = request.form['apikey']
-				# except BadRequestKeyError:
-				# 	return jsonify({"error":"missing apikey in form for request."}), 403
-				# client = assemblyClient(apikey)
-				# asm_upload_url = client.upload_file(filepath)
-				# _id = client.queue_url(asm_upload_url, dummy=SEND_DUMMY_QUERY)
+				try:
+					apikey = request.form['apikey']
+				except BadRequestKeyError:
+					return jsonify({"error":"missing apikey in form for request."}), 403
+				client = assemblyClient(apikey)
+				asm_upload_url = client.upload_file(filepath)
+				_id = client.queue_url(asm_upload_url, dummy=DUMMY_QUERY)
 
 				# Sends back the url for the file that was just uploaded
-				return jsonify({"filepath":file_url, "query_id":file_url}), 200
+				return jsonify({"filepath":file_url, "query_id":_id}), 200
 	return
 
 
-@api.route("/uploads/<path:name>")
+@api.route("/videos/<path:name>", methods=["GET"])
 def download_file(name):
 	"""
 	route handler for "/api/uploads/<filename>"
 
 	Sends over the file directly
 	"""
+	# return name
+	# serving video from server should work now..
+	root_dir = os.getcwd()
+	print(os.path.join(root_dir, 'uploads'))
 	return send_from_directory(
-		current_app.config['UPLOAD_FOLDER'], name, as_attachment=False
+		os.path.join(root_dir, 'uploads'), name, as_attachment=True
 	)
 
 
@@ -84,8 +90,8 @@ def download_file(name):
 def check_id():
 	dat = request.form
 	client = assemblyClient(dat['apikey'])
-	response = client.check_id(dat['id'])
-	return response
+	response = json.loads(client.check_id(dat['id'], dummy=DUMMY_QUERY))
+	return jsonify(response)
 
 # api endpoint for getting the status of an query id
 # request data should contain the following fields:
@@ -98,5 +104,5 @@ def check_id():
 def get_id_status():
 	dat = request.form
 	client = assemblyClient(dat['apikey'])
-	response = client.get_id_status(dat['id'])
+	response = client.get_id_status(dat['id'], dummy=DUMMY_QUERY)
 	return response
