@@ -1,7 +1,10 @@
 import React, { useState, useRef } from "react";
 import ReactPlayer from "react-player";
-import { Accordion, Card, Button } from "react-bootstrap";
+import PageItem from 'react-bootstrap/PageItem'
+import Pagination from 'react-bootstrap/Pagination'
+import { Accordion, Container, Col, Row, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./player.css"
 const data = require("./dummy2.json");
 
 
@@ -16,25 +19,25 @@ export function concatWords(word1, word2) {
 }
 
 export function makeSentences(words, len, accum) {
-  if(words.length === 0 ||  !Array.isArray(words)) return accum
+  if (words.length === 0 || !Array.isArray(words)) return accum
 
-  const l = words.slice(0,len)
+  const l = words.slice(0, len)
   const r = words.slice(len, words.length)
-  // console.log(r)
-  console.log(l)
-  const g = l.reduce((prev, next) => concatWords(prev,next))
-// not sure if js optimizes tail recursion.. haha
+  const g = l.reduce((prev, next) => concatWords(prev, next))
+  // not sure if js optimizes tail recursion.. haha
   return makeSentences(r, len, accum.concat(g))
 
 
 }
 
-function Player ({ videoPath,
-                   data
-                 })  {
+function Player({ videoPath,
+    data
+  }
+) {
   const player = useRef();
+  const [isTimeStamp, setIsTimestamp] = useState(true)
   const handleClick = (event) => {
-    console.log(event.target.innerText);
+    // console.log(event.target.innerText);
     let seekTimeArr = event.target.innerText.split(":");
     let seekTime = Number(seekTimeArr[0] * 60) + Number(seekTimeArr[1]);
     player.current.seekTo(seekTime);
@@ -46,71 +49,81 @@ function Player ({ videoPath,
   }
 
   return (
-    <div>
-      <ReactPlayer
-        ref={player}
-        url={videoPath}
-        width="100%"
-        height="100%"
-        controls={true}
-      />
-      <Accordion defaultActiveKey="1" flush>
-        <Accordion.Item eventKey="0">
-          <Accordion.Header><h1>Video Transcript</h1></Accordion.Header>
-          <Accordion.Body>
-            <p>{data.text}</p>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-      <h1>Timestamps</h1>
-      <div>
-        {data.chapters.map((chapter) => {
-          return (
-            <div>
-              <div>
-                {" "}
-                <b>Gist: </b> {chapter.gist}{" "}
+    <Container fluid>
+      <Row >
+        <Col xs={5}>
+          {isTimeStamp && (
+            <>
+              <h2>Timestamps</h2>
+              <div className="overflow">
+                {data.chapters.map((chapter) => {
+                  return (
+                    <div>
+                      <div>
+                        {" "}
+                        <b>Gist: </b> {chapter.gist}{" "}
+                      </div>
+                      <div>
+                        {" "}
+                        <b>Timestamp: </b>{" "}
+                        <button onClick={handleClick}>
+                          {millisToMinutesAndSeconds(chapter.start)}{" "}
+                        </button>{" "}
+                        {/* --{" "} */}
+                        {/* <button onClick={handleClick}> */}
+                        {/*   {millisToMinutesAndSeconds(chapter.end)} */}
+                        {/* </button>{" "} */}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              <div>
-                {" "}
-                <b>Timestamp: </b>{" "}
-                <button onClick={handleClick}>
-                  {millisToMinutesAndSeconds(chapter.start)}{" "}
-                </button>{" "}
-                --{" "}
-                <button onClick={handleClick}>
-                  {millisToMinutesAndSeconds(chapter.end)}
-                </button>{" "}
+            </>
+          )}
+          {
+            !isTimeStamp && (<>
+              <h2>Captions</h2>
+              <div className="overflow">
+                {makeSentences(data.words, 20, []).map((chapter) => {
+                  return (
+                    <div>
+                      <div>
+                        {" "} {chapter.text}{" "}
+                      </div>
+                      <div>
+                        {" "}
+                        <b>Timestamp: </b>{" "}
+                        <button onClick={handleClick}>
+                          {millisToMinutesAndSeconds(chapter.start)}{" "}
+                        </button>{" "}
+                        {/* --{" "} */}
+                        {/* <button onClick={handleClick}> */}
+                        {/*   {millisToMinutesAndSeconds(chapter.end)} */}
+                        {/* </button>{" "} */}
+                      </div>
+                    </div>
+                  );
+
+                })}
               </div>
-            </div>
-          );
-        })}
-      </div>
-      <h1>Captions</h1>
-      <div>
-        {makeSentences(data.words,20,[]).map((chapter) => {
-          return (
-            <div>
-              <div>
-                {" "}
-                <b>Gist: </b> {chapter.text}{" "}
-              </div>
-              <div>
-                {" "}
-                <b>Timestamp: </b>{" "}
-                <button onClick={handleClick}>
-                  {millisToMinutesAndSeconds(chapter.start)}{" "}
-                </button>{" "}
-                --{" "}
-                <button onClick={handleClick}>
-                  {millisToMinutesAndSeconds(chapter.end)}
-                </button>{" "}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+            </>)
+
+          }
+    <Button variant="primary" onClick={() => setIsTimestamp(!isTimeStamp)} className="button" >Show {isTimeStamp ? "Captions" : "Timestamps"}</Button>{' '}
+        </Col>
+        <Col xs={7}>
+          <div className="center">
+            <ReactPlayer
+              ref={player}
+              url={videoPath}
+              width="1000px"
+              height="560px"
+              controls={true}
+            />
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 export default Player;
