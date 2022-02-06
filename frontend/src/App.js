@@ -34,6 +34,7 @@ const App = () => {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const [apikey, setApikey] = React.useState(null);
   const [videoFilePath, setVideoFilePath] = React.useState(null);
+  const [data, setData] = React.useState(null);
   const [videoUrl, setVideoUrl] = React.useState(null);
   // Video StatesFilePath
   // waitingFile - uploading - showvideo
@@ -88,6 +89,15 @@ const App = () => {
         status = d.data
         console.log(status)
       }
+      // make another request to get the data once completed
+      const dcomp = await axios.get(url +  '/api/assembly/check_id', {
+        params: {
+          apikey: apikey,
+          id: response.data.query_id
+        }
+      })
+      setData(dcomp.data);
+      console.log(dcomp.data)
       setAppState("showVideo")
     } catch (error) {
       console.log(error)
@@ -153,7 +163,7 @@ const App = () => {
       // Right now the video is played from the server..
       // but we can also play the local version too. Probs better
       // (<ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} />)
-      return <Player videoPath={videoFilePath} />
+      return <Player videoPath={videoFilePath} data={data} />
     // return (<ReactPlayer url={url + videoUrl} width="100%" height="100%" controls={true} />)
 
     default:
