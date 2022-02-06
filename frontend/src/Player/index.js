@@ -61,12 +61,12 @@ function Player({ videoPath,
                     <div>
                       <div>
                         {" "}
-                        <b>Gist: </b> {chapter.gist}{" "}
+                        <h2 className="chapter"> {chapter.gist}{" "}</h2>
                       </div>
                       <div>
                         {" "}
                         <b>Timestamp: </b>{" "}
-                        <button onClick={handleClick}>
+                        <button className="button-name" onClick={handleClick}>
                           {millisToMinutesAndSeconds(chapter.start)}{" "}
                         </button>{" "}
                         {/* --{" "} */}
@@ -93,7 +93,7 @@ function Player({ videoPath,
                       <div>
                         {" "}
                         <b>Timestamp: </b>{" "}
-                        <button onClick={handleClick}>
+                        <button className="button-name" onClick={handleClick}>
                           {millisToMinutesAndSeconds(chapter.start)}{" "}
                         </button>{" "}
                         {/* --{" "} */}

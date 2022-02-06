@@ -42,7 +42,8 @@ class assemblyClient:
 			with open(f"src/dummyResponses/{dummy}/id_url.txt", 'r') as f:
 				_id = f.read().splitlines()[0]
 			q_time = time()
-			dummyTimer = [q_time+randint(1,2), q_time+randint(10,50)]
+			# dummyTimer = [q_time+randint(1,2), q_time+randint(10,50)]
+			dummyTimer = [q_time+randint(1,2), q_time+3]
 			pickle.dump(dummyTimer, open(f'src/dummyResponses/{dummy}/timer.pkl', 'wb'))
 		return _id
 

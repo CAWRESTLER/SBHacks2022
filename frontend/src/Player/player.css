@@ -24,13 +24,13 @@
 	cursor: pointer;
 	display: inline-flex;
 	font-family: "JetBrains Mono",monospace;
-	height: 48px;
+	height: 24px;
 	justify-content: center;
 	line-height: 1;
 	list-style: none;
 	overflow: hidden;
-	padding-left: 16px;
-	padding-right: 16px;
+	padding-left: 3px;
+	padding-right: 3px;
 	position: relative;
 	text-align: left;
 	text-decoration: none;
@@ -65,4 +65,9 @@
 .center-2{
     display: flex;
     align-items: center;
+}
+
+.chapter {
+	font-size: x-large;
+	font-weight: normal;
 }
