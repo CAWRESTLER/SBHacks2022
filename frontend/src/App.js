@@ -13,7 +13,7 @@ const baseStyle = {
   borderRadius: '40px',
   borderColor: '#DCDCDC',
   borderStyle: 'solid',
- 
+
   color: '#bdbdbd',
   transition: 'border .3s ease-in-out',
 };
@@ -33,7 +33,9 @@ const rejectStyle = {
 const App = () => {
   // a local state to store the currently selected file.
   const [selectedFile, setSelectedFile] = React.useState(null);
+  const [apikey, setApikey] = React.useState(null);
   const [videoFilePath, setVideoFilePath] = React.useState(null);
+  const [data, setData] = React.useState(null);
   const [videoUrl, setVideoUrl] = React.useState(null);
   // Video StatesFilePath
   // waitingFile - uploading - showvideo
@@ -48,11 +50,19 @@ const App = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     const formData = new FormData();
+    const formData2 = new FormData();
     formData.append("file", selectedFile);
+    formData.append("apikey", apikey);
     setAppState("uploading")
     console.log("sending form data")
+    // console.log(formData.values())
+    // Display the values
+    for (var value of formData.values()) {
+      console.log(value);
+    }
     // the url is run in localhost when in development..
     try {
+      // upload the file
       const response = await axios({
         method: "post",
         url: url + "/api/upload",
@@ -64,8 +74,36 @@ const App = () => {
 
       // response.data will contain
       // { filepath: "url" , query_id: "url" }
-      console.log(response)
       setVideoUrl(response.data.filepath)
+      // Make a get requst to check the id
+      const data = await axios.get(url + '/api/assembly/check_id', {
+        params: {
+          apikey: apikey,
+          id: response.data.query_id
+        }
+      })
+      let status = data.data.status
+      while (status != "completed") {
+        console.log(status)
+        await new Promise(r => setTimeout(r, 3000));
+        const d = await axios.get(url + '/api/assembly/get_id_status', {
+          params: {
+            apikey: apikey,
+            id: response.data.query_id
+          }
+        })
+        status = d.data
+        console.log(status)
+      }
+      // make another request to get the data once completed
+      const dcomp = await axios.get(url + '/api/assembly/check_id', {
+        params: {
+          apikey: apikey,
+          id: response.data.query_id
+        }
+      })
+      setData(dcomp.data);
+      console.log(dcomp.data)
       setAppState("showVideo")
     } catch (error) {
       console.log(error)
@@ -113,32 +151,32 @@ const App = () => {
     case "waitingFile":
       // If I abstract into a component clicking doesn't work for some reason
       return (<body>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-     <form onSubmit={handleSubmit}>
-      
-       {/* <input type="file" onChange={handleFileSelect}/> */}
-       <div {...getRootProps({ style })} className="contain">
-         <input {...getInputProps()} / >
-         <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-         <header>Drag and drop your videos here.</header>
-         <span>or upload the files</span>
-        
-       </div>
-       <div >
-         <h4>UPLOADED FILE</h4>
-          <ul class="gradient-list">
-           <li>  {files} </li>  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+        <form onSubmit={handleSubmit}>
+
+          {/* <input type="file" onChange={handleFileSelect}/> */}
+          <div {...getRootProps({ style })} className="contain">
+            <input {...getInputProps()} />
+            <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <header>Drag and drop your videos here.</header>
+            <span>or upload the files</span>
+
+          </div>
+          <div >
+            <h4>UPLOADED FILE</h4>
+            <ul class="gradient-list">
+              <li>  {files} </li>
             </ul>
-       </div>
-       
-       <h4>API KEY</h4>
-       <input type="text" placeholder='AssemblyAI API key' className='api' />
-       <br></br>
-       <br></br>
-       <input type="submit" value="Submit" className='up' />
-       {/* <ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} /> */}
-     </form>
-     </body>)
+          </div>
+
+          <h4>API KEY</h4>
+          <input type="text" placeholder='ENTER THE API KEY' className='api' onChange={(e) => setApikey(e.target.value)} value={apikey} />
+          <br></br>
+          <br></br>
+          <input type="submit" value="Submit" className='up' />
+          {/* <ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} /> */}
+        </form>
+      </body>)
     case "uploading":
       return (<div className='upload'> <span>U</span>
         <span>P</span>
@@ -149,13 +187,13 @@ const App = () => {
         <span>I</span>
         <span>N</span>
         <span>G</span>
-        </div>)
+      </div>)
     case "showVideo":
       // Right now the video is played from the server..
       // but we can also play the local version too. Probs better
       // (<ReactPlayer url={videoFilePath} width="100%" height="100%" controls={true} />)
-      return <Player videoPath={videoFilePath}/>
-      // return (<ReactPlayer url={url + videoUrl} width="100%" height="100%" controls={true} />)
+      return <Player videoPath={videoFilePath} data={data} />
+    // return (<ReactPlayer url={url + videoUrl} width="100%" height="100%" controls={true} />)
 
     default:
       return (<div class="text"><span>Ooops...</span><br></br>Something went wrong</div>)
