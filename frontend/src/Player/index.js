@@ -87,7 +87,7 @@ function Player({ videoPath,
               {
                 !isTimeStamp && (<>
                   <h2>Captions</h2>
-                  <div className="overflow" className="button-name">
+                  <div className="overflow">
                     {makeSentences(data.words, 20, []).map((chapter) => {
                       return (
                         <div>
@@ -97,7 +97,7 @@ function Player({ videoPath,
                           <div>
                             {" "}
                             <b>Timestamp: </b>{" "}
-                            <button onClick={handleClick}>
+                            <button onClick={handleClick}className="button-name">
                               {millisToMinutesAndSeconds(chapter.start)}{" "}
                             </button>{" "}
                             {/* --{" "} */}
@@ -117,12 +117,12 @@ function Player({ videoPath,
             <button variant="primary" onClick={() => setIsTimestamp(!isTimeStamp)} className="button-name" >Show {isTimeStamp ? "Captions" : "Timestamps"}</button>{' '}
           </Col>
           <Col xs={7}>
-            <div className="center">
+            <div className="vid-wrapper">
               <ReactPlayer
                 ref={player}
                 url={videoPath}
-                width="1000px"
-                height="560px"
+                width="800px"
+                height="450px"
                 controls={true}
               />
             </div>
