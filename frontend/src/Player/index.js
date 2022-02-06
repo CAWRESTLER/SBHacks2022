@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import ReactPlayer from 'react-player';
-const data = require("./dummy.json")
+const data = require("./dummy2.json")
 
 function Chapter ({ chapter }) {
   console.log(chapter)
