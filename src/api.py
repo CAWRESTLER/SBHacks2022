@@ -90,7 +90,7 @@ def download_file(name):
 def check_id():
 	dat = request.form
 	client = assemblyClient(dat['apikey'])
-	response = json.loads(client.check_id(dat['id'], dummy=DUMMY_QUERY))
+	response = client.check_id(dat['id'], dummy=DUMMY_QUERY)
 	return jsonify(response)
 
 # api endpoint for getting the status of an query id
